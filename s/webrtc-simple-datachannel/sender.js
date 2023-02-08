@@ -68,7 +68,7 @@
     .then(() =>/* remoteConnection.setRemoteDescription(localConnection.localDescription))
     .then(() => remoteConnection.createAnswer())
     .then(answer => remoteConnection.setLocalDescription(answer))
-    .then(() =>*/ localConnection.setRemoteDescription(remoteConnection.localDescription))
+    .then(() =>*/ localConnection.setRemoteDescription(localConnection.localDescription))
     .catch(handleCreateDescriptionError);
   }
     
