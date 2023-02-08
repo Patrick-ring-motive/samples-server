@@ -48,16 +48,16 @@
     
     // Create the remote connection and its event listeners
     
-    remoteConnection = new RTCPeerConnection();
-    remoteConnection.ondatachannel = receiveChannelCallback;
+  //  remoteConnection = new RTCPeerConnection();
+  //  remoteConnection.ondatachannel = receiveChannelCallback;
     
     // Set up the ICE candidates for the two peers
     
     localConnection.onicecandidate = e => !e.candidate
-        || remoteConnection.addIceCandidate(e.candidate)
-        .catch(handleAddCandidateError);
+      //  || remoteConnection.addIceCandidate(e.candidate)
+      //  .catch(handleAddCandidateError);
 
-    remoteConnection.onicecandidate = e => !e.candidate
+  //  remoteConnection.onicecandidate = e => !e.candidate
         || localConnection.addIceCandidate(e.candidate)
         .catch(handleAddCandidateError);
     
@@ -65,10 +65,10 @@
     
     localConnection.createOffer()
     .then(offer => localConnection.setLocalDescription(offer))
-    .then(() => remoteConnection.setRemoteDescription(localConnection.localDescription))
+    .then(() =>/* remoteConnection.setRemoteDescription(localConnection.localDescription))
     .then(() => remoteConnection.createAnswer())
     .then(answer => remoteConnection.setLocalDescription(answer))
-    .then(() => localConnection.setRemoteDescription(remoteConnection.localDescription))
+    .then(() =>*/ localConnection.setRemoteDescription(remoteConnection.localDescription))
     .catch(handleCreateDescriptionError);
   }
     
