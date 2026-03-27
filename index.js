@@ -32,7 +32,7 @@ const htmlTop = `<!doctype html>
   <div class="mdn-filelist">
   `;
 
-  const htmlBottom = `</div>
+const htmlBottom = `</div>
   <div class="mdn-footer">
   All text content on MDN is offered under the
   <a href="http://creativecommons.org/licenses/by-sa/2.5/">CC-SA-BY</a> license,
@@ -60,7 +60,7 @@ let httpsOptions = {};
 try {
   httpsOptions.key = fs.readFileSync("/etc/pki/tls/private/mdn-samples.mozilla.org.key");
   httpsOptions.cert = fs.readFileSync("/etc/pki/tls/certs/mdn-samples.mozilla.org.crt");
-} catch(err) {
+} catch (err) {
   console.error("Unable to load HTTPS cert and/or key; available on HTTP only: " + err);
   httpsOptions = null;
 }
@@ -93,7 +93,7 @@ function readJSONFile(pathname) {
     let data = fs.readFileSync(pathname, options);
     const obj = JSON.parse(data);
     return obj;
-  } catch(err) {
+  } catch (err) {
     console.error(`Error loading JSON data for file ${pathname}: ${err}`);
   }
 
@@ -101,11 +101,16 @@ function readJSONFile(pathname) {
 }
 
 function buildMenuEntry(manifest) {
-  let {name, docsUrl, description, pathname} = manifest;
+  let {
+    name,
+    docsUrl,
+    description,
+    pathname
+  } = manifest;
   let docsLink = `[<a href="${docsUrl}">Documentation</a>]`;
   let dt = `<dt><a href="${pathname}">${name}</a></dt>`;
   let dd = `<dd>${escapeHTML(description)}&nbsp;${docsLink}</dd>`;
-  output = dt+"\n"+dd+"\n";
+  output = dt + "\n" + dd + "\n";
   return output;
 }
 
@@ -156,13 +161,13 @@ function buildMenu(pathname) {
     encoding: "utf8",
     withFileTypes: true
   };
-  
+
   try {
     let files = fs.readdirSync(pathname, readdirOptions);
     let manifestList = loadAllManifests(files, pathname);
 
     output = buildMenuHTML(manifestList);
-  } catch(err) {
+  } catch (err) {
     console.error("Error reading directory: " + err);
     return null;
   }

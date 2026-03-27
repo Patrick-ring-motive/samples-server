@@ -46,7 +46,7 @@ function connect() {
     var time = new Date(msg.date);
     var timeStr = time.toLocaleTimeString();
 
-    switch(msg.type) {
+    switch (msg.type) {
       case "id":
         clientID = msg.id;
         setUsername();
@@ -64,7 +64,7 @@ function connect() {
         var ul = "";
         var i;
 
-        for (i=0; i < msg.users.length; i++) {
+        for (i = 0; i < msg.users.length; i++) {
           ul += msg.users[i] + "<br>";
         }
         document.getElementById("userlistbox").innerHTML = ul;

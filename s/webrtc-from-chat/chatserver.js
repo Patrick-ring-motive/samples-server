@@ -55,7 +55,7 @@ function log(text) {
 // where you do it. Just return false to refuse WebSocket connections given
 // the specified origin.
 function originIsAllowed(origin) {
-  return true;    // We will accept all connections
+  return true; // We will accept all connections
 }
 
 // Scans the list of users and see if the specified name is unique. If it is,
@@ -65,7 +65,7 @@ function isUsernameUnique(name) {
   var isUnique = true;
   var i;
 
-  for (i=0; i<connectionArray.length; i++) {
+  for (i = 0; i < connectionArray.length; i++) {
     if (connectionArray[i].username === name) {
       isUnique = false;
       break;
@@ -81,7 +81,7 @@ function sendToOneUser(target, msgString) {
   var isUnique = true;
   var i;
 
-  for (i=0; i<connectionArray.length; i++) {
+  for (i = 0; i < connectionArray.length; i++) {
     if (connectionArray[i].username === target) {
       connectionArray[i].sendUTF(msgString);
       break;
@@ -96,7 +96,7 @@ function getConnectionForID(id) {
   var connect = null;
   var i;
 
-  for (i=0; i<connectionArray.length; i++) {
+  for (i = 0; i < connectionArray.length; i++) {
     if (connectionArray[i].clientID === id) {
       connect = connectionArray[i];
       break;
@@ -118,7 +118,7 @@ function makeUserListMessage() {
 
   // Add the users to the list
 
-  for (i=0; i<connectionArray.length; i++) {
+  for (i = 0; i < connectionArray.length; i++) {
     userListMsg.users.push(connectionArray[i].username);
   }
 
@@ -134,11 +134,10 @@ function sendUserListToAll() {
   var userListMsgStr = JSON.stringify(userListMsg);
   var i;
 
-  for (i=0; i<connectionArray.length; i++) {
+  for (i = 0; i < connectionArray.length; i++) {
     connectionArray[i].sendUTF(userListMsgStr);
   }
 }
-
 
 // Try to load the key and certificate files for SSL so we can
 // do HTTPS (required for non-local WebRTC).
@@ -152,11 +151,11 @@ try {
   httpsOptions.key = fs.readFileSync(keyFilePath);
   try {
     httpsOptions.cert = fs.readFileSync(certFilePath);
-  } catch(err) {
+  } catch (err) {
     httpsOptions.key = null;
     httpsOptions.cert = null;
   }
-} catch(err) {
+} catch (err) {
   httpsOptions.key = null;
   httpsOptions.cert = null;
 }
@@ -170,19 +169,18 @@ try {
   if (httpsOptions.key && httpsOptions.cert) {
     webServer = https.createServer(httpsOptions, handleWebRequest);
   }
-} catch(err) {
+} catch (err) {
   webServer = null;
 }
 
 if (!webServer) {
   try {
     webServer = http.createServer({}, handleWebRequest);
-  } catch(err) {
+  } catch (err) {
     webServer = null;
     log(`Error attempting to create HTTP(s) server: ${err.toString()}`);
   }
 }
-
 
 // Our HTTPS server does nothing but service WebSocket
 // connections, so every request just returns 404. Real Web
@@ -190,7 +188,7 @@ if (!webServer) {
 // want to, you can return real HTML here and serve Web content.
 
 function handleWebRequest(request, response) {
-  log ("Received request for " + request.url);
+  log("Received request for " + request.url);
   response.writeHead(404);
   response.end();
 }
@@ -266,14 +264,14 @@ wsServer.on('request', function(request) {
       // Messages with a "target" property are sent only to a user
       // by that name.
 
-      switch(msg.type) {
+      switch (msg.type) {
         // Public, textual message
         case "message":
           msg.name = connect.username;
           msg.text = msg.text.replace(/(<([^>]+)>)/ig, "");
           break;
 
-        // Username change
+          // Username change
         case "username":
           var nameChanged = false;
           var origName = msg.name;
@@ -304,7 +302,7 @@ wsServer.on('request', function(request) {
           // but this is a demo. Don't do this in a real app.
           connect.username = msg.name;
           sendUserListToAll();
-          sendToClients = false;  // We already sent the proper responses
+          sendToClients = false; // We already sent the proper responses
           break;
       }
 
@@ -323,7 +321,7 @@ wsServer.on('request', function(request) {
         if (msg.target && msg.target !== undefined && msg.target.length !== 0) {
           sendToOneUser(msg.target, msgString);
         } else {
-          for (i=0; i<connectionArray.length; i++) {
+          for (i = 0; i < connectionArray.length; i++) {
             connectionArray[i].sendUTF(msgString);
           }
         }
@@ -346,7 +344,7 @@ wsServer.on('request', function(request) {
     // Build and output log output for close information.
 
     var logMessage = "Connection closed: " + connection.remoteAddress + " (" +
-                     reason;
+      reason;
     if (description !== null && description.length !== 0) {
       logMessage += ": " + description;
     }
